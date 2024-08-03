@@ -4,9 +4,9 @@
 Create Flask app app_views
 """
 from flask import jsonify
-from api.v1.views import app_views
+from api.v1.views import app_view
 
-@app_views.route('/status')
+@app_view.route('/status')
 def api_status():
     """
     
