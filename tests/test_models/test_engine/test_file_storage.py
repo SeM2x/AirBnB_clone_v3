@@ -113,3 +113,49 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get_case_positive(self):
+        storage = FileStorage()
+        obj1 = BaseModel()
+        storage.new(obj1)
+        storage.save()
+        obj2 = storage.get(BaseModel, obj1.id)
+        self.assertEqual(obj2.id, obj1.id)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get_case_negative(self):
+        storage = FileStorage()
+        obj1 = BaseModel()
+        storage.new(obj1)
+        storage.save()
+        storage.delete(obj1)
+        storage.save()
+        obj2 = storage.get(BaseModel, obj1.id)
+        self.assertEqual(obj2, None)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count(self):
+        storage = FileStorage()
+        storage.all().clear()
+        storage.save()
+        count = 10
+        for i in range(count):
+            storage.new(BaseModel())
+            storage.new(User())
+        storage.save()
+        self.assertEqual(storage.count(BaseModel), count)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_all(self):
+        storage = FileStorage()
+        storage.all().clear()
+        storage.save()
+
+        count = 10
+        for i in range(count):
+            storage.new(BaseModel())
+            storage.new(User())
+            storage.new(State())
+        storage.save()
+        self.assertEqual(storage.count(), count * 3)

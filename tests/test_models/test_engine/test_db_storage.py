@@ -86,3 +86,47 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_case_positive(self):
+        storage = DBStorage()
+        storage.__init__()
+        obj1 = State(name=f'state-0')
+        storage.new(obj1)
+        storage.save()
+        obj2 = storage.get(State, obj1.id)
+        self.assertEqual(obj2.id, obj1.id)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_case_negative(self):
+        storage = DBStorage()
+        storage.__init__()
+        obj1 = State(name=f'state-1')
+        storage.new(obj1)
+        storage.save()
+        storage.delete(obj1)
+        storage.save()
+        obj2 = storage.get(State, obj1.id)
+        self.assertEqual(obj2, None)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count(self):
+        storage = DBStorage()
+        storage.__init__()
+        count = 10
+        for i in range(count):
+            storage.new(State(name=f'state{i}'))
+            storage.new(User(email=f'user{i}@gmail.com', password='pass'))
+        storage.save()
+        self.assertEqual(storage.count(State), count)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_all(self):
+        storage = DBStorage()
+        storage.__init__()
+
+        count = 10
+        for i in range(count):
+            storage.new(User(email=f'user{i}@gmail.com', password='pass'))
+            storage.new(State(name=f'state{i}'))
+        storage.save()
+        self.assertEqual(storage.count(), count)
