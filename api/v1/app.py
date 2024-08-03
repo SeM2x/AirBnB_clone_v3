@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Creates a flask app"""
 from os import getenv
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 
@@ -14,6 +14,15 @@ app.register_blueprint(app_views)
 def teardown_db(exception):
     """closes the storage on teardown"""
     storage.close()
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    """handler for 404 errors"""
+    res = {
+        "error": "Not found"
+    }
+    return jsonify(res)
 
 
 if __name__ == '__main__':
