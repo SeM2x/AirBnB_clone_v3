@@ -1,16 +1,12 @@
 #!/usr/bin/python3
-
-"""
-Create Flask app app_views
-"""
+"""Creates app views"""
 from flask import jsonify
-from api.v1.views import app_view
+from api.v1.views import app_views
 
-@app_view.route('/status')
+
+@app_views.route('/status')
 def api_status():
     """
-    
     """
-
-    response = {'status' : "OK"}
+    response = {'status': "OK"}
     return jsonify(response)

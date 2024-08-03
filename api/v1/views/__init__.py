@@ -1,11 +1,7 @@
 #!/usr/bin/python3
-
-"""
-    Createview Flask app
-"""
-
-from flask import Blueprint
-
-app_view = Blueprint('app_views', __name__,url_prefix='/api/v1')
+"""Create view Flask app"""
 
 from api.v1.views.index import *
+from flask import Blueprint
+
+app_views = Blueprint('app_views', __name__, url_prefix='/api/v1')
