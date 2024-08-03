@@ -6,11 +6,11 @@
 from os import getenv
 from flask import Flask
 from models import storage
-from api.v1.views import app_views
+from api.v1.views import app_view
 
 app = Flask(__name__)
 
-app.register_blueprint(app_views)
+app.register_blueprint(app_view)
 
 
 if __name__ == '__main__':
