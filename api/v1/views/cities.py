@@ -44,16 +44,14 @@ def delete_city(city_id):
                  strict_slashes=False)
 def create_city(state_id):
     """Creates a City"""
-    if not request.get_json(silent=True):
-        abort(400, description="Not a JSON")
-
-    if 'name' not in request.get_json(silent=True):
-        abort(400, description="Missing name")
-
     state = storage.get(State, state_id)
     if not state:
         abort(404)
     data = request.get_json(silent=True)
+    if not data:
+        abort(400, description="Not a JSON")
+    if 'name' not in data:
+        abort(400, description="Missing name")
     city = City(**data)
     city.state_id = state_id
     city.save()
@@ -66,11 +64,9 @@ def update_city(city_id):
     city = storage.get(City, city_id)
     if not city:
         abort(404)
-
-    if not request.get_json(silent=True):
-        abort(400, description="Not a JSON")
-
     data = request.get_json(silent=True)
+    if not data:
+        abort(400, description="Not a JSON")
     ignore_keys = ["id", "created_at", "updated_at"]
     for key, value in data.items():
         if key not in ignore_keys:
