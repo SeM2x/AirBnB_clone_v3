@@ -1,5 +1,8 @@
 #!/usr/bin/python3
-"""Creates app views"""
+"""
+    Creates app views
+"""
+
 from models import storage
 from flask import jsonify
 from api.v1.views import app_views
