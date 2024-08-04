@@ -8,7 +8,7 @@ from flask import jsonify
 from api.v1.views import app_views
 
 
-@app_views.route('/status')
+@app_views.route('/status', strict_slashes=False)
 def api_status():
     """
     """
@@ -16,7 +16,7 @@ def api_status():
     return jsonify(response)
 
 
-@app_views.route('/stats')
+@app_views.route('/stats', strict_slashes=False)
 def get_stats():
     """
 
