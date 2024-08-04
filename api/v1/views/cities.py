@@ -39,8 +39,17 @@ def delete_city(city_id):
     res.status_code = 200
     return res
 
+
 @app_views.route('states/<state_id>/cities', methods=['POST'])
 def create_city(state_id):
+    """"""
+    res = jsonify()
+    res.status_code = 404
+    return {res}
+
+
+@app_views.route('/cities/<city_id>', methods=['PUT'])
+def delete_city(city_id):
     """"""
     res = jsonify()
     res.status_code = 404
