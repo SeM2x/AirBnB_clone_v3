@@ -31,12 +31,12 @@ def delete_user(user_id):
     if user:
         storage.delete(user)
         storage.save()
-        return jsonify(empty_dict), 200
+        return jsonify({}), 200
     else:
         abort(404)
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
-def post_user():
+def create_user():
     """POST method """
     data = request.get_json()
     if data is None:
@@ -52,7 +52,7 @@ def post_user():
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'])
-def put_user(user_id):
+def update_user(user_id):
     """PUT method """
     user = storage.get("User", user_id)
     if user is None:
