@@ -9,3 +9,4 @@ from api.v1.views  import states
 from api.v1.views import cities
 from api.v1.views import amenities
 from api.v1.views import user
+from api.v1.views import places_amenities
