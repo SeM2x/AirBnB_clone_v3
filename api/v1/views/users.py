@@ -51,7 +51,7 @@ def create_user():
         abort(400, "Missing password")
     user = User(**data)
     user.save()
-    return jsonify(user.to_dict()), 201
+    return make_response(jsonify(user.to_dict()), 201)
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'], strict_slashes=False)
@@ -69,4 +69,4 @@ def update_user(user_id):
             user.bm_update(key, value)
     user.save()
     user = user.to_dict()
-    return jsonify(user), 200
+    return make_response(jsonify(user), 200)
