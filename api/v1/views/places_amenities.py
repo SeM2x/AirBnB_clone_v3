@@ -18,7 +18,8 @@ def get_place_amenities(place_id):
     if storage_t == "db":
         amenities = [amenity.to_dict() for amenity in place.amenities]
     else:
-        amenities = place.amenity_ids
+        amenities = [storage.get(Amenity, id).to_dict()
+                     for id in place.amenity_ids]
     return jsonify(amenities)
 
 
@@ -34,7 +35,7 @@ def delete_place_amenity(place_id, amenity_id):
     if not place or not amenity:
         abort(404)
     if storage_t == "db":
-        linked = amenity.id in [obj.id for obj in place.amenities]
+        linked = amenity.id in [a.id for a in place.amenities]
     else:
         linked = amenity.id in place.amenity_ids
     if not linked:
@@ -45,6 +46,7 @@ def delete_place_amenity(place_id, amenity_id):
         place.amenity_ids = [a for a in place.amenity_ids if a != amenity.id]
 
     place.save()
+    storage.save()
     return make_response(jsonify({}), 200)
 
 
@@ -68,4 +70,5 @@ def create_place_amenity(place_id, amenity_id):
     else:
         place.amenity_ids.append(amenity.id)
     place.save()
+    storage.save()
     return make_response(jsonify(amenity.to_dict()), 201)
