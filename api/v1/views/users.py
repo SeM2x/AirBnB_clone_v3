@@ -66,7 +66,7 @@ def update_user(user_id):
     for key, value in data.items():
         ignore_keys = ["id", "email", "created_at", "updated_at"]
         if key not in ignore_keys:
-            user.bm_update(key, value)
+            setattr(user, key, value)
     user.save()
     user = user.to_dict()
     return make_response(jsonify(user), 200)
