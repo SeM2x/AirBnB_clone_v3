@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """Users view"""
 
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, make_response
 from models import storage
 from models.user import User
 from api.v1.views import app_views
@@ -34,7 +34,7 @@ def delete_user(user_id):
     if user:
         storage.delete(user)
         storage.save()
-        return jsonify({}), 200
+        return make_response(jsonify({}), 200)
     else:
         abort(404)
 
@@ -42,7 +42,7 @@ def delete_user(user_id):
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_user():
     """POST method """
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
     if 'email' not in data:
@@ -60,7 +60,7 @@ def update_user(user_id):
     user = storage.get("User", user_id)
     if user is None:
         abort(404)
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if data is None:
         abort(400, "Not a JSON")
     for key, value in data.items():
