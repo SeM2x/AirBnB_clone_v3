@@ -19,15 +19,14 @@ def all_users():
 def get_user(user_id):
     """ GET method """
     user = storage.get("User", user_id)
-    if user is None:
+    if user :
+        return jsonify(user.to_dict())
+    else:
         abort(404)
-    user = user.to_json()
-    return jsonify(user)
 
 @app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
 def delete_user(user_id):
     """DELETE method """
-    empty_dict = {}
     user = storage.get("User", user_id)
     if user:
         storage.delete(user)
