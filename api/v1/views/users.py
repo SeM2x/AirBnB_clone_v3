@@ -10,8 +10,11 @@ from api.v1.views import app_views
 @app_views.route('/users', strict_slashes=False)
 def all_users():
     """ returns list of all User objects """
-    users = storage.all(User).values()
-    return jsonify([user.to_dict() for user in users])
+    all_users = []
+    users = storage.all("User").values()
+    for user in users:
+        all_users.append(user.to_json())
+    return jsonify(all_users)
 
 
 @app_views.route('/users/<user_id>', strict_slashes=False)
