@@ -6,6 +6,7 @@ from models import storage
 from models.user import User
 from api.v1.views import app_views
 
+
 @app_views.route('/users', strict_slashes=False)
 def all_users():
     """ returns list of all User objects """
@@ -15,14 +16,16 @@ def all_users():
         all_users.append(user.to_json())
     return jsonify(all_users)
 
+
 @app_views.route('/users/<user_id>', strict_slashes=False)
 def get_user(user_id):
     """ GET method """
     user = storage.get("User", user_id)
-    if user :
+    if user:
         return jsonify(user.to_dict())
     else:
         abort(404)
+
 
 @app_views.route('/users/<user_id>', methods=['DELETE'], strict_slashes=False)
 def delete_user(user_id):
@@ -34,6 +37,7 @@ def delete_user(user_id):
         return jsonify({}), 200
     else:
         abort(404)
+
 
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_user():
@@ -47,8 +51,7 @@ def create_user():
         abort(400, "Missing password")
     user = User(**data)
     user.save()
-    user = user.to_json()
-    return jsonify(user), 201
+    return jsonify(user.to_dict()), 201
 
 
 @app_views.route('/users/<user_id>', methods=['PUT'])
@@ -65,9 +68,5 @@ def update_user(user_id):
         if key not in ignore_keys:
             user.bm_update(key, value)
     user.save()
-    user = user.to_json()
+    user = user.to_dict()
     return jsonify(user), 200
-
-
-
-
