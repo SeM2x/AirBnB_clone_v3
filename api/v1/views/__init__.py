@@ -11,3 +11,4 @@ from api.v1.views import amenities
 from api.v1.views import places
 from api.v1.views import places_amenities
 from api.v1.views import users
+from api.v1.views import places_reviews
